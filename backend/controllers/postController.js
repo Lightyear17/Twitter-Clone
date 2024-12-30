@@ -46,22 +46,17 @@ export const deletePost = async (req, res) => {
     const userId = req.user._id;
     const { id: postId } = req.params;
 
-    // console.log(req.params);
+ 
 
     const post = await Post.findById(postId);
 
     if (!post) return res.status(404).json({ message: "Post not found" });
 
-    // console.log("post user", post.user.toString());
-    // console.log("owner", userId.toString());
+    
     if (post.user.toString() !== userId.toString())
       return res.status(401).json({ message: "Unauthorized" });
 
-    // console.log(post.img);
-    // if (post.img) {
-    //     const imgId = post.img.split("/").pop().split(".")[0];
-    //     await cloudinary.uploader.destroy(imgId);
-    // }
+    
 
     await Post.findByIdAndDelete(postId);
 
@@ -135,7 +130,7 @@ export const CommentOnPost = async (req, res) => {
     }
 
     const post = await Post.findById(postId);
-    // console.log("post", post);
+   
     if (!post) {
       return res.status({ error: "Post not found" });
     }
@@ -152,7 +147,7 @@ export const CommentOnPost = async (req, res) => {
 };
 
 export const getAllPosts = async (req, res) => {
-  console.log("getAllPosts")
+  
   try {
     const post = await Post.find()
       .sort({ createdAt: -1 })
@@ -177,10 +172,10 @@ export const getAllPosts = async (req, res) => {
 };
 
 export const getLikedPosts = async (req, res) => {
-  console.log("getLikedPosts")
+  
   const userId = req.user._id;
 
-  // console.log(userId)
+  
 
   try {
     const user = await User.findById(userId);
@@ -195,7 +190,7 @@ export const getLikedPosts = async (req, res) => {
         path: "comments.user",
         select: "-password",
       });
-      // console.log(likedPosts)
+     
     res.status(200).json(likedPosts);
   } catch (error) {
    
@@ -205,7 +200,7 @@ export const getLikedPosts = async (req, res) => {
 
 
 export const getFollowingPosts = async (req, res) => {
-  console.log("getFollowingPosts")
+ 
   try {
     const userId = req.user._id;
 
@@ -214,13 +209,13 @@ export const getFollowingPosts = async (req, res) => {
     if(!user) return res.status(404).json({error:"User not found"})
 
       const following = user.following
-      console.log("following",following)
+     
 
       const feedPost = await Post.find({user:{$in:following}}).sort({createdAt:-1})
       .populate({path:"user",select:"-password"})
       .populate({path:"comments.user",select:"-password"})
 
-      // console.log(feedPost)   
+     
 
       res.status(200).json(feedPost)
 
@@ -240,7 +235,7 @@ export const getFollowingPosts = async (req, res) => {
 
 
 export const getUserPosts = async (req, res) => {
-  console.log("getUserPosts")
+  
 	try {
 		const { userName } = req.params;
   

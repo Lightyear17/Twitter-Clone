@@ -34,7 +34,7 @@ const Posts = ({ feedType,userName, userId }) => {
 		queryKey: ["posts", feedType, userName, userId],
 		queryFn: async () => {
 
-			// console.log(endpoint)
+			
 			try {
 
 				const res = await fetch(getPostEndpoint());
@@ -54,7 +54,7 @@ const Posts = ({ feedType,userName, userId }) => {
 				}
 
 				const data = await res.json();
-				console.log(data)
+				
 				
 				return data;
 			} catch (error) {
@@ -78,7 +78,6 @@ const Posts = ({ feedType,userName, userId }) => {
 		refetch()
 	}, [feedType, refetch,userName,userId]);
 
-	console.log(posts)
 
 	return (
 		<>

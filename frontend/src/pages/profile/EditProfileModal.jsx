@@ -3,7 +3,7 @@ import useUpdateUserProfile from "../../components/hooks/useUpdateUserProfile";
 import { useNavigate } from "react-router-dom";
 
 const EditProfileModal = ({ authUser }) => {
-	// console.log(authUser)
+	
 	const [formData, setFormData] = useState({
 		fullName: "",
 		userName: "",
@@ -17,12 +17,12 @@ const EditProfileModal = ({ authUser }) => {
 	const { updateProfile, isUpdatingProfile } = useUpdateUserProfile();
 	const navigate = useNavigate();
 	const handleInputChange = (e) => {
-		// console.log("Input changed:", e.target.name, e.target.value);
+		
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
 	useEffect(() => {
-		// console.log(authUser.fullName, authUser.userName, authUser.email, authUser.bio, authUser.link);
+		
 		if (authUser) {
 			setFormData({
 				fullName: authUser.fullName,
@@ -36,16 +36,16 @@ const EditProfileModal = ({ authUser }) => {
 		}
 	}, [authUser]);
 	useEffect(() => {
-		// console.log("formData updated:", formData);
+		
 	}, [formData]);
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const updatedUser = await updateProfile(formData);
-		// console.log("Form submitted with data:", formData); // Log the form data
+		
 		if (updatedUser?.userName !== authUser.userName) {
 			navigate(`/profile/${updatedUser.userName}`);
 		}
-		// Call the updateProfile function
+		
 		updateProfile(formData);
 	};
 
