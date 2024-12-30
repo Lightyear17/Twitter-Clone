@@ -45,7 +45,7 @@ const EditProfileModal = ({ authUser }) => {
 		if (updatedUser?.userName !== authUser.userName) {
 			navigate(`/profile/${updatedUser.userName}`);
 		}
-		
+		// Call the updateProfile function
 		updateProfile(formData);
 	};
 

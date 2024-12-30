@@ -25,7 +25,7 @@ function App() {
           if(data.error) return null
           if(!res.ok) throw new Error(data.error|| "Something went wrong");
 
-         
+          
           return data
       } catch (error) {
           throw new Error(error);

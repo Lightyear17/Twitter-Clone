@@ -46,17 +46,21 @@ export const deletePost = async (req, res) => {
     const userId = req.user._id;
     const { id: postId } = req.params;
 
- 
+    
 
     const post = await Post.findById(postId);
 
     if (!post) return res.status(404).json({ message: "Post not found" });
 
-    
+   
     if (post.user.toString() !== userId.toString())
       return res.status(401).json({ message: "Unauthorized" });
 
     
+    // if (post.img) {
+    //     const imgId = post.img.split("/").pop().split(".")[0];
+    //     await cloudinary.uploader.destroy(imgId);
+    // }
 
     await Post.findByIdAndDelete(postId);
 
@@ -147,7 +151,7 @@ export const CommentOnPost = async (req, res) => {
 };
 
 export const getAllPosts = async (req, res) => {
-  
+
   try {
     const post = await Post.find()
       .sort({ createdAt: -1 })
@@ -175,7 +179,7 @@ export const getLikedPosts = async (req, res) => {
   
   const userId = req.user._id;
 
-  
+ 
 
   try {
     const user = await User.findById(userId);
@@ -190,7 +194,7 @@ export const getLikedPosts = async (req, res) => {
         path: "comments.user",
         select: "-password",
       });
-     
+ 
     res.status(200).json(likedPosts);
   } catch (error) {
    
@@ -209,13 +213,13 @@ export const getFollowingPosts = async (req, res) => {
     if(!user) return res.status(404).json({error:"User not found"})
 
       const following = user.following
-     
+      
 
       const feedPost = await Post.find({user:{$in:following}}).sort({createdAt:-1})
       .populate({path:"user",select:"-password"})
       .populate({path:"comments.user",select:"-password"})
 
-     
+      
 
       res.status(200).json(feedPost)
 
@@ -235,7 +239,7 @@ export const getFollowingPosts = async (req, res) => {
 
 
 export const getUserPosts = async (req, res) => {
-  
+ 
 	try {
 		const { userName } = req.params;
   

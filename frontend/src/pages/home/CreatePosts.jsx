@@ -28,7 +28,7 @@ const CreatePost = () => {
 							},
 							body: JSON.stringify({text,img})	 
 					})
-					
+					// console.log(res)
 					
 					const data = await res.json()
 					

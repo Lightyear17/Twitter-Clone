@@ -18,7 +18,8 @@ const NotificationPage = () => {
 			try {
 				const res = await fetch("api/notifications");
 				const data = await res.json()
-			
+				
+	
 				if(!res.ok){
 					throw new Error(data.error|| "Something went wrong")
 				}

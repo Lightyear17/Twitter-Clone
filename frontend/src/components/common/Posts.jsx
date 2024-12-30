@@ -78,6 +78,7 @@ const Posts = ({ feedType,userName, userId }) => {
 		refetch()
 	}, [feedType, refetch,userName,userId]);
 
+	
 
 	return (
 		<>
