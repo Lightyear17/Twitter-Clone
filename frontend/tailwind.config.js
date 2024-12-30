@@ -9,6 +9,7 @@ export default {
 	plugins: [daisyui],
 
 	daisyui: {
+		base: false,
 		themes: [
 			"light",
 			{
@@ -18,6 +19,7 @@ export default {
 					secondary: "rgb(24, 24, 24)",
 				},
 			},
+			
 		],
 	},
 };

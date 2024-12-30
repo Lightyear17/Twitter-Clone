@@ -8,6 +8,10 @@ import {v2} from 'cloudinary'
 import   postRoutes from './routes/postRoutes.js'
 import path from "path";
 import notificationRoutes from "./routes/notificationRoutes.js";
+import cors from "cors";
+
+
+
 dotenv.config()
 
 v2.config({
@@ -41,3 +45,9 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     connectMongoDB()
 });
+app.use(
+	cors({
+		origin: process.env.FRONTEND_URL || "http://localhost:3000",
+		credentials: true,
+	})
+);
