@@ -18,7 +18,7 @@ const RightPanel = () => {
           throw new Error(data.message || "Something went wrong");
         }
 
-        console.log(data);
+        
         return data;
       } catch (error) {
         throw new Error(error.message);
@@ -30,6 +30,7 @@ const RightPanel = () => {
   if (suggestedUsers?.length === 0) {
     <div className="md:w-64 w-0"></div>;
   }
+
   return (
     <div className="hidden lg:block my-4 mx-2">
       <div className="bg-[#16181C] p-4 rounded-md sticky top-2">
@@ -47,7 +48,7 @@ const RightPanel = () => {
           {!isLoading &&
             suggestedUsers?.map((user) => (
               <Link
-                to={`/profile/${user.username}`}
+                to={`/profile/${user.userName}`}
                 className="flex items-center justify-between gap-4"
                 key={user._id}
               >

@@ -24,7 +24,8 @@ const ProfilePage = () => {
 	const coverImgRef = useRef(null);
 	const profileImgRef = useRef(null);
 
-	const {username} = useParams();
+	const {userName} = useParams();
+	console.log(userName);
 
 	const {follow,isPending} = useFollow();
 
@@ -41,7 +42,9 @@ const ProfilePage = () => {
 		queryKey: ["userProfile"],
 		queryFn: async () => {
 			try {
-				const res = await fetch(`/api/users/profile/${username}`);
+				console.log(userName);
+				
+				const res = await fetch(`/api/users/profile/${userName}`);
 				const data = await res.json();
 				if (!res.ok) {
 					throw new Error(data.error || "Something went wrong");
@@ -54,7 +57,9 @@ const ProfilePage = () => {
 	});
 
 
-	const { isUpdatingProfile, updateProfile } = useUpdateUserProfile();
+	const { isUpdatingProfile, updateProfile } = useUpdateUserProfile({});
+
+
 
 	const isMyProfile = authUser._id === user?._id;
 	const memberSinceDate = formatMemberSinceDate(user?.createdAt);
@@ -74,7 +79,7 @@ const ProfilePage = () => {
 
 	useEffect(() => {
 		refetch();
-	}, [username, refetch]);
+	}, [userName, refetch]);
 
 	return (
 		<>
@@ -138,11 +143,11 @@ const ProfilePage = () => {
 								</div>
 							</div>
 							<div className='flex justify-end px-4 mt-5'>
-								{isMyProfile && <EditProfileModal />}
+								{isMyProfile && <EditProfileModal authUser={authUser} />}
 								{!isMyProfile && (
 									<button
 										className='btn btn-outline rounded-full btn-sm'
-										onClick={() => follow("Followed successfully")}
+										onClick={() => follow(user?._id)}
 									>
 										{isPending && "Loading..."}
 										{!isPending && amIFollowing && "Unfollow"}
@@ -225,7 +230,7 @@ const ProfilePage = () => {
 						</>
 					)}
 
-					<Posts feedType={feedType} username={username} userId={user?._id}  />
+					<Posts feedType={feedType} userName={userName} userId={user?._id}  />
 				</div>
 			</div>
 		</>

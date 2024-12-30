@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { MdOutlineMail } from "react-icons/md";
 import { MdPassword } from "react-icons/md";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+
 
 const XSvg = (props) => (
 	<svg aria-hidden='true' viewBox='0 0 24 24' {...props}>
@@ -23,6 +25,7 @@ const LoginPage = () => {
 	});
 
 	const queryClient = useQueryClient();
+
 
 	const {
 		mutate: loginMutation,
@@ -45,13 +48,14 @@ const LoginPage = () => {
 				if (!res.ok) {
 					throw new Error(data.error || "Something went wrong");
 				}
+				return data
 			} catch (error) {
 				throw new Error(error);
 			}
+
 		},
 		onSuccess: () => {
-			
-			toast.success("Login successful");
+			queryClient.invalidateQueries({ queryKey: ["authUser"] });
 			
 		},
 		onError: () => {	

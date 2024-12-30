@@ -128,7 +128,7 @@ export const CommentOnPost = async (req, res) => {
     const postId = req.params.id;
     const userId = req.user._id;
 
-   
+  
 
     if (!text) {
       return res.status(400).json({ error: "Text field is reqired" });
@@ -152,6 +152,7 @@ export const CommentOnPost = async (req, res) => {
 };
 
 export const getAllPosts = async (req, res) => {
+  console.log("getAllPosts")
   try {
     const post = await Post.find()
       .sort({ createdAt: -1 })
@@ -176,13 +177,16 @@ export const getAllPosts = async (req, res) => {
 };
 
 export const getLikedPosts = async (req, res) => {
+  console.log("getLikedPosts")
   const userId = req.user._id;
+
+  // console.log(userId)
 
   try {
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    const likedPosts = await Post.find({ _id: { $in: user.likes } })
+    const likedPosts = await Post.find({ _id: { $in: user.likedPosts } })
       .populate({
         path: "user",
         select: "-password",
@@ -191,7 +195,7 @@ export const getLikedPosts = async (req, res) => {
         path: "comments.user",
         select: "-password",
       });
-
+      // console.log(likedPosts)
     res.status(200).json(likedPosts);
   } catch (error) {
    
@@ -201,18 +205,22 @@ export const getLikedPosts = async (req, res) => {
 
 
 export const getFollowingPosts = async (req, res) => {
+  console.log("getFollowingPosts")
   try {
     const userId = req.user._id;
+
 
     const user = await User.findById(userId)
     if(!user) return res.status(404).json({error:"User not found"})
 
       const following = user.following
+      console.log("following",following)
 
       const feedPost = await Post.find({user:{$in:following}}).sort({createdAt:-1})
       .populate({path:"user",select:"-password"})
       .populate({path:"comments.user",select:"-password"})
 
+      // console.log(feedPost)   
 
       res.status(200).json(feedPost)
 
@@ -232,10 +240,12 @@ export const getFollowingPosts = async (req, res) => {
 
 
 export const getUserPosts = async (req, res) => {
+  console.log("getUserPosts")
 	try {
-		const { username } = req.params;
+		const { userName } = req.params;
+  
 
-		const user = await User.findOne({ username });
+		const user = await User.findOne({ userName });
 		if (!user) return res.status(404).json({ error: "User not found" });
 
 		const posts = await Post.find({ user: user._id })

@@ -78,7 +78,7 @@ const Post = ({ post }) => {
       }
     },
     onSuccess:(updatedComment)=>{
-      console.log(updatedComment._id)
+      
       toast.success("Comment posted successfully");
       setComment(""); 
       queryClient.invalidateQueries({queryKey: ["posts"]});
@@ -109,7 +109,7 @@ const Post = ({ post }) => {
           });
           
           const data = await res.json();
-          console.log(data)
+       
 
           if(!res.ok) {
               throw new Error(data.error || "Something went wrong!");
@@ -125,7 +125,7 @@ const Post = ({ post }) => {
 
       queryClient.setQueryData(["posts"], (oldData) => {
         
-				return oldData.map((p) => {
+				return oldData?.map((p) => {
          
 					if (p._id === post._id) {
 						return { ...p, likes: updatedLikes };
@@ -137,6 +137,7 @@ const Post = ({ post }) => {
       
     },
     onError: (error) => { 
+      
       toast.error(error.message); 
     } 
   })
@@ -168,7 +169,7 @@ const Post = ({ post }) => {
       <div className="flex gap-2 items-start p-4 border-b border-gray-700">
         <div className="avatar">
           <Link
-            to={`/profile/${postOwner.username}`}
+            to={`/profile/${postOwner.userName}`}
             className="w-8 rounded-full overflow-hidden"
           >
             <img src={postOwner.profileImg || "/avatar-placeholder.png"} />
@@ -176,12 +177,12 @@ const Post = ({ post }) => {
         </div>
         <div className="flex flex-col flex-1">
           <div className="flex gap-2 items-center">
-            <Link to={`/profile/${postOwner.username}`} className="font-bold">
+            <Link to={`/profile/${postOwner.userName}`} className="font-bold">
               {postOwner.fullName}
             </Link>
             <span className="text-gray-700 flex gap-1 text-sm">
-              <Link to={`/profile/${postOwner.username}`}>
-                @{postOwner.username}
+              <Link to={`/profile/${postOwner.userName}`}>
+                @{postOwner.userName}
               </Link>
               <span>·</span>
               <span>{formattedDate}</span>
@@ -255,7 +256,7 @@ const Post = ({ post }) => {
                               {comment.user.fullName}
                             </span>
                             <span className="text-gray-700 text-sm">
-                              @{comment.user.username}
+                              @{comment.user.userName}
                             </span>
                           </div>
                           <div className="text-sm">{comment.text}</div>

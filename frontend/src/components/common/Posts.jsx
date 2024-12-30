@@ -7,17 +7,22 @@ import toast from "react-hot-toast";
 
 
 
-const Posts = ({ feedType }) => {
+
+const Posts = ({ feedType,userName, userId }) => {
 
 	
 	const getPostEndpoint =  () => {
 		switch (feedType) {
 			case "forYou":
-				return "/api/posts/all"
+				return "/api/posts/all";
 			case "following":
-				return "/api/posts/following"
+				return "/api/posts/following";
+			case "posts":
+				return `/api/posts/user/${userName}`;
+			case "likes":
+				return `/api/posts/liked/${userId}`;
 			default:
-				return "/api/posts/all"
+				return "/api/posts/all";
 		}
 	}
 
@@ -26,7 +31,7 @@ const Posts = ({ feedType }) => {
 
 	
 	const { data: posts, isLoading, refetch, isRefetching } = useQuery({
-		queryKey: ["posts"],
+		queryKey: ["posts", feedType, userName, userId],
 		queryFn: async () => {
 
 			// console.log(endpoint)
@@ -71,7 +76,9 @@ const Posts = ({ feedType }) => {
 
 	useEffect(() => {
 		refetch()
-	}, [feedType, refetch])
+	}, [feedType, refetch,userName,userId]);
+
+	console.log(posts)
 
 	return (
 		<>

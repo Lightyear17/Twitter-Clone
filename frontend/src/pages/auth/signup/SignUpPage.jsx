@@ -13,7 +13,7 @@ import { MdOutlineMail } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { MdPassword } from "react-icons/md";
 import { MdDriveFileRenameOutline } from "react-icons/md";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 const SignUpPage = () => {
@@ -23,42 +23,44 @@ const SignUpPage = () => {
 		fullName: "",
 		password: "",
 	});
+	const queryClient =useQueryClient();
 	const { mutate, isError, isPending, error } = useMutation({
 		mutationFn: async ({ email, userName, fullName, password }) => {
-		  try {
-			console.log({ email, userName, fullName, password }); // Log the received data
-			const res = await fetch("/api/auth/signup", {
-			  method: "POST",
-			  headers: {
-				"Content-Type": "application/json"
-			  },
-			  body: JSON.stringify({ userName, fullName, password, email })
-			});
-	  
+			try {
 			
-	  
-			const data = await res.json();
-			console.log(data); // Log the response data
+				const res = await fetch("/api/auth/signup", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({ userName, fullName, password, email })
+				});
 
-			if (!res.ok) {
-				throw new Error(data.error|| "Failed to create account");	
-			  }
-			
-			  console.log(data);
-			return data;
-		  } catch (error) {
-			console.log(error); // Log the error
-			
-			throw error;
-		  }
+
+
+				const data = await res.json();
+				
+
+				if (!res.ok) {
+					throw new Error(data.error || "Failed to create account");
+				}
+
+				
+				return data;
+			} catch (error) {
+				console.log(error); // Log the error
+
+				throw error;
+			}
 		},
 
 		onSuccess: () => {
 			toast.success("Account created successfully");
+			queryClient.invalidateQueries({ queryKey: ["authUser"] });
 		}
-	  });
-	  
-	  
+	});
+
+
 
 
 
@@ -129,7 +131,7 @@ const SignUpPage = () => {
 							value={formData.password}
 						/>
 					</label>
-					<button className='btn rounded-full btn-primary text-white'>{isPending ? "Loading...":"Sign Up"}</button>
+					<button className='btn rounded-full btn-primary text-white'>{isPending ? "Loading..." : "Sign Up"}</button>
 					{isError && <p className='text-red-500'>{error.message}</p>}
 				</form>
 				<div className='flex flex-col lg:w-2/3 gap-2 mt-4'>
