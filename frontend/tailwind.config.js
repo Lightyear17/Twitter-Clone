@@ -1,18 +1,14 @@
-import daisyui from "daisyui";
+import daisyui from "./node_modules/daisyui";
 import daisyUIThemes from "daisyui/src/theming/themes";
-// /** @type {import('tailwindcss').Config} */
+/** @type {import('tailwindcss').Config} */
 export default {
-	mode: 'jit', 
-	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}",
-		"./node_modules/daisyui/**/*.js", 
-	],
+	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}",".src/components/**/*.{js,ts,jsx,tsx}"],
 	theme: {
 		extend: {},
 	},
 	plugins: [daisyui],
 
 	daisyui: {
-		base: true,
 		themes: [
 			"light",
 			{

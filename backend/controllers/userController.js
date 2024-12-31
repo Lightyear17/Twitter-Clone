@@ -97,7 +97,7 @@ export const updateUser = async (req, res) => {
   // let {  } = req.query;
   let {fullName, email,userName,currentPassword,newPassword,  bio, link, profileImg, coverImg } = req.body;
 
-
+  // console.log("here updated username",fullName, email,userName)
 
   
 
@@ -134,7 +134,7 @@ export const updateUser = async (req, res) => {
 
     if(profileImg) {
       if(user.profileImg){
-        
+        // console.log(user.profileImg.split("/").pop().split(".")[0])
           await v2.uploader.destroy(user.profileImg.split("/").pop().split(".")[0]);
       }
       const uploadedResponse = await v2.uploader.upload(profileImg );

@@ -25,7 +25,7 @@ const ProfilePage = () => {
 	const profileImgRef = useRef(null);
 
 	const {userName} = useParams();
-	
+	console.log(userName);
 
 	const {follow,isPending} = useFollow();
 
@@ -42,7 +42,7 @@ const ProfilePage = () => {
 		queryKey: ["userProfile"],
 		queryFn: async () => {
 			try {
-				
+				console.log(userName);
 				
 				const res = await fetch(`/api/users/profile/${userName}`);
 				const data = await res.json();

@@ -41,7 +41,7 @@ const Post = ({ post }) => {
         if (!res.ok) {
           throw new Error(data.error || "Something went wrong!");
         }
-       
+        console.log(data);
         return data;
       } catch (error) {
         throw new Error(error);
@@ -58,7 +58,7 @@ const Post = ({ post }) => {
   const {mutate: commentPost, isPending: isCommenting} = useMutation({
     mutationFn: async () => {
       try {
-       
+        console.log(comment)
         const res = await fetch(`/api/posts/comment/${post._id}`, {
           method: "POST",
           headers: {
@@ -114,14 +114,14 @@ const Post = ({ post }) => {
           if(!res.ok) {
               throw new Error(data.error || "Something went wrong!");
           }
-        
+          // console.log(data)
           return data
       } catch (error) {
           throw new Error(error);
       }
     },
     onSuccess: (updatedLikes) => {  
-     
+      console.log(updatedLikes)
 
       queryClient.setQueryData(["posts"], (oldData) => {
         
@@ -130,7 +130,7 @@ const Post = ({ post }) => {
 					if (p._id === post._id) {
 						return { ...p, likes: updatedLikes };
 					}
-          
+          console.log(p)
 					return p;
 				});
 			});

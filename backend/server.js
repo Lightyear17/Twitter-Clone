@@ -5,13 +5,9 @@ import connectMongoDB from "./db/connectMongoDb.js";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
 import {v2} from 'cloudinary'
-import   postRoutes from './routes/postRoutes.js'
 import path from "path";
+import   postRoutes from './routes/postRoutes.js'
 import notificationRoutes from "./routes/notificationRoutes.js";
-import cors from "cors";
-
-
-
 dotenv.config()
 
 v2.config({
@@ -33,6 +29,7 @@ app.use("/api/users",userRoutes)
 app.use("/api/posts",postRoutes)
 app.use("/api/notifications",notificationRoutes)
 
+// console.log(process.env.MONGO_URI)
 
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static(path.join(__dirname, "/frontend/dist")));
@@ -41,13 +38,8 @@ if (process.env.NODE_ENV === "production") {
 		res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
 	});
 }
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     connectMongoDB()
 });
-app.use(
-	cors({
-		origin: process.env.FRONTEND_URL || "http://localhost:3000",
-		credentials: true,
-	})
-);
